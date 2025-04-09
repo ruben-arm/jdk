@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2014, 2022, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2014, 2022, 2025, Oracle and/or its affiliates. All rights reserved.
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
  * This code is free software; you can redistribute it and/or modify it
@@ -38,7 +38,7 @@ public class CodeCacheOptions {
     private static final EnumSet<BlobType> ALL_SEGMENTED_HEAPS
             = EnumSet.complementOf(NON_SEGMENTED_HEAPS);
     private static final EnumSet<BlobType> SEGMENTED_HEAPS_WO_PROFILED
-            = EnumSet.of(BlobType.NonNMethod, BlobType.MethodNonProfiled);
+            = EnumSet.of(BlobType.NonNMethod, BlobType.MethodSimpleNonProfiled, BlobType.MethodOptNonProfiled);
     private static final EnumSet<BlobType> ONLY_NON_METHODS_HEAP
             = EnumSet.of(BlobType.NonNMethod);
 
@@ -79,7 +79,9 @@ public class CodeCacheOptions {
                 return this.reserved;
             case NonNMethod:
                 return this.nonNmethods;
-            case MethodNonProfiled:
+            case MethodOptNonProfiled:
+                return this.nonProfiled;
+            case MethodSimpleNonProfiled:
                 return this.nonProfiled;
             case MethodProfiled:
                 return this.profiled;
@@ -102,7 +104,10 @@ public class CodeCacheOptions {
                     CommandLineOptionTest.prepareNumericFlag(
                             BlobType.NonNMethod.sizeOptionName, nonNmethods),
                     CommandLineOptionTest.prepareNumericFlag(
-                            BlobType.MethodNonProfiled.sizeOptionName,
+                            BlobType.MethodOptNonProfiled.sizeOptionName,
+                            nonProfiled),
+                    CommandLineOptionTest.prepareNumericFlag(
+                            BlobType.MethodSimpleNonProfiled.sizeOptionName,
                             nonProfiled),
                     CommandLineOptionTest.prepareNumericFlag(
                             BlobType.MethodProfiled.sizeOptionName, profiled));

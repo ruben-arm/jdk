@@ -1036,9 +1036,12 @@ void CompileBroker::possibly_add_compiler_threads(JavaThread* THREAD) {
 
   // Now, we do the more expensive operations.
   julong free_memory = os::free_memory();
-  // If SegmentedCodeCache is off, both values refer to the single heap (with type CodeBlobType::All).
-  size_t available_cc_np = CodeCache::unallocated_capacity(CodeBlobType::MethodNonProfiled),
+  // If SegmentedCodeCache is off, all the values refer to the single heap (with type CodeBlobType::All).
+  size_t available_cc_np_simple = CodeCache::unallocated_capacity(CodeBlobType::MethodSimpleNonProfiled),
+         available_cc_np_opt = CodeCache::unallocated_capacity(CodeBlobType::MethodOptNonProfiled),
          available_cc_p  = CodeCache::unallocated_capacity(CodeBlobType::MethodProfiled);
+  size_t available_cc_c1 = (SegmentedCodeCache ? available_cc_p + available_cc_np_simple : available_cc_p);
+  size_t available_cc_c2 = available_cc_np_opt;
 
   // Only attempt to start additional threads if the lock is free.
   if (!CompileThread_lock->try_lock()) return;
@@ -1048,7 +1051,7 @@ void CompileBroker::possibly_add_compiler_threads(JavaThread* THREAD) {
     new_c2_count = MIN4(_c2_count,
         _c2_compile_queue->size() / c2_tasks_per_thread,
         (int)(free_memory / (200*M)),
-        (int)(available_cc_np / (128*K)));
+        (int)(available_cc_c2 / (128*K)));
 
     for (int i = old_c2_count; i < new_c2_count; i++) {
 #if INCLUDE_JVMCI
@@ -1097,8 +1100,8 @@ void CompileBroker::possibly_add_compiler_threads(JavaThread* THREAD) {
         ThreadsListHandle tlh;  // name() depends on the TLH.
         assert(tlh.includes(ct), "ct=" INTPTR_FORMAT " exited unexpectedly.", p2i(ct));
         stringStream msg;
-        msg.print("Added compiler thread %s (free memory: %dMB, available non-profiled code cache: %dMB)",
-                  ct->name(), (int)(free_memory/M), (int)(available_cc_np/M));
+        msg.print("Added compiler thread %s (free memory: %dMB, available C2 code cache: %dMB)",
+                  ct->name(), (int)(free_memory/M), (int)(available_cc_c2/M));
         print_compiler_threads(msg);
       }
     }
@@ -1109,7 +1112,7 @@ void CompileBroker::possibly_add_compiler_threads(JavaThread* THREAD) {
     new_c1_count = MIN4(_c1_count,
         _c1_compile_queue->size() / c1_tasks_per_thread,
         (int)(free_memory / (100*M)),
-        (int)(available_cc_p / (128*K)));
+        (int)(available_cc_c1 / (128*K)));
 
     for (int i = old_c1_count; i < new_c1_count; i++) {
       JavaThread *ct = make_thread(compiler_t, compiler1_object(i), _c1_compile_queue, _compilers[0], THREAD);
@@ -1120,8 +1123,8 @@ void CompileBroker::possibly_add_compiler_threads(JavaThread* THREAD) {
         ThreadsListHandle tlh;  // name() depends on the TLH.
         assert(tlh.includes(ct), "ct=" INTPTR_FORMAT " exited unexpectedly.", p2i(ct));
         stringStream msg;
-        msg.print("Added compiler thread %s (free memory: %dMB, available profiled code cache: %dMB)",
-                  ct->name(), (int)(free_memory/M), (int)(available_cc_p/M));
+        msg.print("Added compiler thread %s (free memory: %dMB, available C1 code cache: %dMB)",
+                  ct->name(), (int)(free_memory/M), (int)(available_cc_c1/M));
         print_compiler_threads(msg);
       }
     }

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2014, 2021, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2014, 2021, 2025, Oracle and/or its affiliates. All rights reserved.
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
  * This code is free software; you can redistribute it and/or modify it
@@ -30,33 +30,45 @@ import java.util.EnumSet;
 import jdk.test.whitebox.WhiteBox;
 
 public enum BlobType {
-    // Execution level 1 and 4 (non-profiled) nmethods (including native nmethods)
-    MethodNonProfiled(0, "CodeHeap 'non-profiled nmethods'", "NonProfiledCodeHeapSize") {
+    // Execution level 4 (non-profiled) nmethods
+    MethodOptNonProfiled(0, "CodeHeap 'optimized non-profiled nmethods'", "NonProfiledCodeHeapSize") {
         @Override
         public boolean allowTypeWhenOverflow(BlobType type) {
             return super.allowTypeWhenOverflow(type)
+                    || type == BlobType.MethodProfiled
+                    || type == BlobType.MethodSimpleNonProfiled;
+        }
+    },
+    // Execution level 1 (non-profiled) nmethods (including native nmethods)
+    MethodSimpleNonProfiled(1, "CodeHeap 'simple non-profiled nmethods'", "SimpleNonProfiledCodeHeapSize") {
+        @Override
+        public boolean allowTypeWhenOverflow(BlobType type) {
+            return super.allowTypeWhenOverflow(type)
+                    || type == BlobType.MethodOptNonProfiled
                     || type == BlobType.MethodProfiled;
         }
     },
     // Execution level 2 and 3 (profiled) nmethods
-    MethodProfiled(1, "CodeHeap 'profiled nmethods'", "ProfiledCodeHeapSize") {
+    MethodProfiled(2, "CodeHeap 'profiled nmethods'", "ProfiledCodeHeapSize") {
         @Override
         public boolean allowTypeWhenOverflow(BlobType type) {
             return super.allowTypeWhenOverflow(type)
-                    || type == BlobType.MethodNonProfiled;
+                    || type == BlobType.MethodSimpleNonProfiled
+                    || type == BlobType.MethodOptNonProfiled;
         }
     },
     // Non-nmethods like Buffers, Adapters and Runtime Stubs
-    NonNMethod(2, "CodeHeap 'non-nmethods'", "NonNMethodCodeHeapSize") {
+    NonNMethod(3, "CodeHeap 'non-nmethods'", "NonNMethodCodeHeapSize") {
         @Override
         public boolean allowTypeWhenOverflow(BlobType type) {
             return super.allowTypeWhenOverflow(type)
-                    || type == BlobType.MethodNonProfiled
+                    || type == BlobType.MethodOptNonProfiled
+                    || type == BlobType.MethodSimpleNonProfiled
                     || type == BlobType.MethodProfiled;
         }
     },
     // All types (No code cache segmentation)
-    All(3, "CodeCache", "ReservedCodeCacheSize");
+    All(4, "CodeCache", "ReservedCodeCacheSize");
 
     public final int id;
     public final String sizeOptionName;

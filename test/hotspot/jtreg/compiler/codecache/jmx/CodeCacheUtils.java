@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2014, 2022, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2014, 2022, 2025, Oracle and/or its affiliates. All rights reserved.
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
  * This code is free software; you can redistribute it and/or modify it
@@ -87,7 +87,7 @@ public final class CodeCacheUtils {
      * Checks if the usage of the code heap corresponding to 'btype' can be
      * predicted at runtime if we disable compilation. The usage of the
      * 'NonNMethod' code heap can not be predicted because we generate adapters
-     * and buffers at runtime. The 'MethodNonProfiled' code heap is also not
+     * and buffers at runtime. The 'MethodSimpleNonProfiled' code heap is also not
      * predictable because we may generate compiled versions of method handle
      * intrinsics while resolving methods at runtime. Same applies to 'All'.
      *
@@ -95,7 +95,8 @@ public final class CodeCacheUtils {
      * @return boolean value, true if respective code heap is predictable
      */
     public static boolean isCodeHeapPredictable(BlobType btype) {
-        return btype == BlobType.MethodProfiled;
+        return (btype == BlobType.MethodProfiled ||
+                btype == BlobType.MethodOptNonProfiled);
     }
 
     /**

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 1997, 2024, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 1997, 2024, 2025, Oracle and/or its affiliates. All rights reserved.
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
  * This code is free software; you can redistribute it and/or modify it
@@ -275,10 +275,12 @@ class CodeCache : AllStatic {
   // Returns the CodeBlobType for the given compilation level
   static CodeBlobType get_code_blob_type(int comp_level) {
     if (comp_level == CompLevel_none ||
-        comp_level == CompLevel_simple ||
-        comp_level == CompLevel_full_optimization) {
-      // Non profiled methods
-      return CodeBlobType::MethodNonProfiled;
+        comp_level == CompLevel_simple) {
+      // Simple non profiled methods
+      return CodeBlobType::MethodSimpleNonProfiled;
+    } else if (comp_level == CompLevel_full_optimization) {
+      // Fully optimized non profiled methods
+      return CodeBlobType::MethodOptNonProfiled;
     } else if (comp_level == CompLevel_limited_profile ||
                comp_level == CompLevel_full_profile) {
       // Profiled methods

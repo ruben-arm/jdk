@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2014, 2022, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2014, 2022, 2025, Oracle and/or its affiliates. All rights reserved.
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
  * This code is free software; you can redistribute it and/or modify it
@@ -109,7 +109,7 @@ public class JVMStartupRunner implements CodeCacheCLITestCase.Runner {
                 CommandLineOptionTest.prepareNumericFlag(
                         BlobType.MethodProfiled.sizeOptionName, profiled),
                 CommandLineOptionTest.prepareNumericFlag(
-                        BlobType.MethodNonProfiled.sizeOptionName, nonProfiled),
+                        BlobType.MethodOptNonProfiled.sizeOptionName, nonProfiled),
                 CommandLineOptionTest.prepareNumericFlag(
                         BlobType.NonNMethod.sizeOptionName, nonNmethods));
     }

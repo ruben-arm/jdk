@@ -97,16 +97,18 @@ public class CheckSegmentedCodeCache {
 
         long nonNMethodCodeHeapSize = Long.parseLong(out.firstMatch("NonNMethodCodeHeapSize\\s+=\\s(\\d+)", 1));
         long nonProfiledCodeHeapSize = Long.parseLong(out.firstMatch("NonProfiledCodeHeapSize\\s+=\\s(\\d+)", 1));
+        long simpleNonProfiledCodeHeapSize = Long.parseLong(out.firstMatch("SimpleNonProfiledCodeHeapSize\\s+=\\s(\\d+)", 1));
         long profiledCodeHeapSize = Long.parseLong(out.firstMatch(" ProfiledCodeHeapSize\\s+=\\s(\\d+)", 1));
         long reservedCodeCacheSize = Long.parseLong(out.firstMatch("ReservedCodeCacheSize\\s+=\\s(\\d+)", 1));
 
-        if (reservedCodeCacheSize != nonNMethodCodeHeapSize + nonProfiledCodeHeapSize + profiledCodeHeapSize) {
+        if (reservedCodeCacheSize != nonNMethodCodeHeapSize + nonProfiledCodeHeapSize + simpleNonProfiledCodeHeapSize + profiledCodeHeapSize) {
             throw new RuntimeException("Unexpected segments size sum: " + reservedCodeCacheSize + " != " +
                     nonNMethodCodeHeapSize + "+" + nonProfiledCodeHeapSize + "+" + profiledCodeHeapSize);
         }
 
         if ((reservedCodeCacheSize % 1024 != 0) || (nonNMethodCodeHeapSize % 1024 != 0) ||
-            (nonProfiledCodeHeapSize % 1024 != 0) || (profiledCodeHeapSize % 1024 != 0)) {
+            (nonProfiledCodeHeapSize % 1024 != 0) || (simpleNonProfiledCodeHeapSize % 1024 != 0) ||
+            (profiledCodeHeapSize % 1024 != 0)) {
             throw new RuntimeException("Unexpected segments size alignment: " + reservedCodeCacheSize + ", " +
                     nonNMethodCodeHeapSize + ", " + nonProfiledCodeHeapSize + ", " + profiledCodeHeapSize);
         }
@@ -215,6 +217,7 @@ public class CheckSegmentedCodeCache {
                                                               "-XX:ReservedCodeCacheSize=100M",
                                                               "-XX:NonNMethodCodeHeapSize=10M",
                                                               "-XX:ProfiledCodeHeapSize=10M",
+                                                              "-XX:SimpleNonProfiledCodeHeapSize=10M",
                                                               "-XX:NonProfiledCodeHeapSize=10M",
                                                               "-version");
         failsWith(pb, "Invalid code heap sizes");
@@ -225,9 +228,10 @@ public class CheckSegmentedCodeCache {
                                                               "-XX:NonNMethodCodeHeapSize=10M",
                                                               "-XX:ProfiledCodeHeapSize=10M",
                                                               "-XX:NonProfiledCodeHeapSize=10M",
+                                                              "-XX:SimpleNonProfiledCodeHeapSize=10M",
                                                               "-XX:+PrintFlagsFinal",
                                                               "-version");
-        verifyCodeHeapSize(pb, "ReservedCodeCacheSize", 31457280);
+        verifyCodeHeapSize(pb, "ReservedCodeCacheSize", 41943040);
 
         // Reserved code cache is set, NonNmethod segment size is set, two other segments is automatically
         // adjusted to half of the remaining space
@@ -244,8 +248,9 @@ public class CheckSegmentedCodeCache {
                                                               "-XX:ReservedCodeCacheSize=100M",
                                                               "-XX:ProfiledCodeHeapSize=10M",
                                                               "-XX:NonProfiledCodeHeapSize=10M",
+                                                              "-XX:SimpleNonProfiledCodeHeapSize=10M",
                                                               "-XX:+PrintFlagsFinal",
                                                               "-version");
-        verifyCodeHeapSize(pb, "NonNMethodCodeHeapSize", 83886080);
+        verifyCodeHeapSize(pb, "NonNMethodCodeHeapSize", 73400320);
     }
 }

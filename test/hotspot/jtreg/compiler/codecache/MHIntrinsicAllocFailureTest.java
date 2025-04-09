@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2022, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2022, 2025, Oracle and/or its affiliates. All rights reserved.
  * Copyright (c) 2022 SAP SE. All rights reserved.ights reserved.
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
@@ -68,7 +68,8 @@ public class MHIntrinsicAllocFailureTest {
     public static void main(String[] args) {
         // Lock compilation to be able to better control code cache space
         WHITE_BOX.lockCompilation();
-        fillCodeCacheSegment(BlobType.MethodNonProfiled);
+        fillCodeCacheSegment(BlobType.MethodOptNonProfiled);
+        fillCodeCacheSegment(BlobType.MethodSimpleNonProfiled);
         fillCodeCacheSegment(BlobType.MethodProfiled);
         // JIT compilers should be off, now.
         Asserts.assertNotEquals(WHITE_BOX.getCompilationActivityMode(), 1);

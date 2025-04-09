@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2014, 2022, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2014, 2022, 2025, Oracle and/or its affiliates. All rights reserved.
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
  * This code is free software; you can redistribute it and/or modify it
@@ -82,7 +82,7 @@ public class CodeCacheCLITestCase {
          * profiled-nmethods heap and non-segmented CodeCache.
          */
         NON_TIERED(ONLY_SEGMENTED,
-                EnumSet.of(BlobType.NonNMethod, BlobType.MethodNonProfiled),
+                EnumSet.of(BlobType.NonNMethod, BlobType.MethodOptNonProfiled),
                 CommandLineOptionTest.prepareBooleanFlag(TIERED_COMPILATION,
                         false)),
         /**
@@ -97,11 +97,11 @@ public class CodeCacheCLITestCase {
                 CommandLineOptionTest.prepareNumericFlag(TIERED_STOP_AT, 0)),
         /**
          * Verifies that with TieredStopAtLevel=1 PrintCodeCache output will
-         * contain information about non-nmethods and non-profiled nmethods
-         * heaps only.
+         * contain information about non-nmethods and simple non-profiled
+	 * nmethods heaps only.
          */
         TIERED_LEVEL_1(SEGMENTED_SERVER,
-                EnumSet.of(BlobType.NonNMethod, BlobType.MethodNonProfiled),
+                EnumSet.of(BlobType.NonNMethod, BlobType.MethodOptNonProfiled),
                 CommandLineOptionTest.prepareBooleanFlag(TIERED_COMPILATION,
                         true),
                 CommandLineOptionTest.prepareNumericFlag(TIERED_STOP_AT, 1)),

@@ -1032,6 +1032,7 @@
     <Field type="ulong" contentType="bytes" name="reservedSize" label="Reserved Size" />
     <Field type="ulong" contentType="bytes" name="nonNMethodSize" label="Non-Nmethod Size" />
     <Field type="ulong" contentType="bytes" name="profiledSize" label="Profiled Size" />
+    <Field type="ulong" contentType="bytes" name="simpleNonProfiledSize" label="Simple Non-Profiled Size" />
     <Field type="ulong" contentType="bytes" name="nonProfiledSize" label="Non-Profiled Size" />
     <Field type="ulong" contentType="bytes" name="expansionSize" label="Expansion Size" />
     <Field type="ulong" contentType="bytes" name="minBlockLength" label="Minimum Block Length" />

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2020, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2020, 2025, Oracle and/or its affiliates. All rights reserved.
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
  * This code is free software; you can redistribute it and/or modify it
@@ -44,6 +44,8 @@
 //#include "jvmci/jvmci_globals_pd.hpp"
 //#endif
 
+define_pd_global(uintx,  SimpleNonProfiledCodeHeapSize,    2*M);
+
 #if !defined(COMPILER1) && !defined(COMPILER2) && !INCLUDE_JVMCI
 define_pd_global(bool, BackgroundCompilation,        false);
 define_pd_global(bool, CICompileOSR,                 false);
@@ -57,15 +59,15 @@ define_pd_global(bool, TieredCompilation,            false);
 
 define_pd_global(intx, CompileThreshold,             0);
 
-define_pd_global(intx,   OnStackReplacePercentage,   0);
-define_pd_global(size_t, NewSizeThreadIncrease,      4*K);
-define_pd_global(bool,   InlineClassNatives,         true);
-define_pd_global(bool,   InlineUnsafeOps,            true);
-define_pd_global(uintx,  InitialCodeCacheSize,       160*K);
-define_pd_global(uintx,  ReservedCodeCacheSize,      32*M);
-define_pd_global(uintx,  NonProfiledCodeHeapSize,    0);
-define_pd_global(uintx,  ProfiledCodeHeapSize,       0);
-define_pd_global(uintx,  NonNMethodCodeHeapSize,     32*M);
+define_pd_global(intx,   OnStackReplacePercentage,         0);
+define_pd_global(size_t, NewSizeThreadIncrease,            4*K);
+define_pd_global(bool,   InlineClassNatives,               true);
+define_pd_global(bool,   InlineUnsafeOps,                  true);
+define_pd_global(uintx,  InitialCodeCacheSize,             160*K);
+define_pd_global(uintx,  ReservedCodeCacheSize,            32*M);
+define_pd_global(uintx,  NonProfiledCodeHeapSize,          0);
+define_pd_global(uintx,  ProfiledCodeHeapSize,             0);
+define_pd_global(uintx,  NonNMethodCodeHeapSize,           32*M);
 
 define_pd_global(uintx,  CodeCacheExpansionSize,     32*K);
 define_pd_global(uintx,  CodeCacheMinBlockLength,    1);

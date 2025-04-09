@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2014, 2023, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2014, 2023, 2025, Oracle and/or its affiliates. All rights reserved.
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
  * This code is free software; you can redistribute it and/or modify it
@@ -78,8 +78,10 @@ public class GetNMethodTest extends CompilerWhiteBoxTest {
             Asserts.assertNE(nmethod.code_blob_type, BlobType.All);
             switch (nmethod.comp_level) {
             case 1:
+                checkBlockType(nmethod, BlobType.MethodSimpleNonProfiled);
+                break;
             case 4:
-                checkBlockType(nmethod, BlobType.MethodNonProfiled);
+                checkBlockType(nmethod, BlobType.MethodOptNonProfiled);
                 break;
             case 2:
             case 3:

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2014, 2022, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2014, 2022, 2025, Oracle and/or its affiliates. All rights reserved.
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
  * This code is free software; you can redistribute it and/or modify it
@@ -55,10 +55,18 @@ public class GenericCodeHeapSizeRunner implements CodeCacheCLITestCase.Runner {
                 testCaseDescription.getTestOptions(options));
 
         CommandLineOptionTest.verifyOptionValueForSameVM(
-                BlobType.MethodNonProfiled.sizeOptionName,
+                BlobType.MethodSimpleNonProfiled.sizeOptionName,
                 Long.toString(expectedValues.nonProfiled),
                 String.format("%s should have value %d.",
-                        BlobType.MethodNonProfiled.sizeOptionName,
+                        BlobType.MethodSimpleNonProfiled.sizeOptionName,
+                        expectedValues.nonProfiled),
+                testCaseDescription.getTestOptions(options));
+
+        CommandLineOptionTest.verifyOptionValueForSameVM(
+                BlobType.MethodOptNonProfiled.sizeOptionName,
+                Long.toString(expectedValues.nonProfiled),
+                String.format("%s should have value %d.",
+                        BlobType.MethodOptNonProfiled.sizeOptionName,
                         expectedValues.nonProfiled),
                 testCaseDescription.getTestOptions(options));
 

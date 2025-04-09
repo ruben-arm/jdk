@@ -1934,6 +1934,10 @@ performed by the Java HotSpot VM.
 :   Sets the size in bytes of the code segment containing nonprofiled methods.
     This flag is used only if `-XX:SegmentedCodeCache` is enabled.
 
+`-XX:SimpleNonProfiledCodeHeapSize=`*size*
+:   Sets the size in bytes of the code segment containing simple nonprofiled methods.
+    This flag is used only if `-XX:SegmentedCodeCache` is enabled.
+
 `-XX:+OptimizeStringConcat`
 :   Enables the optimization of `String` concatenation operations. This option
     is enabled by default. To disable the optimization of `String`
