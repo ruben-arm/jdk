@@ -129,6 +129,8 @@ define_pd_global(intx, InlineSmallCode,          1000);
           "Branch Protection to use: none, standard, pac-ret")          \
   product(bool, AlwaysMergeDMB, true, DIAGNOSTIC,                       \
           "Always merge DMB instructions in code emission")             \
+  product(bool, DisablePCNMOVK, false, EXPERIMENTAL,                    \
+          "Disable PCN movk instructions.")                             \
 
 // end of ARCH_FLAGS
 
