@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2000, 2024, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2000, 2025, Oracle and/or its affiliates. All rights reserved.
  * Copyright (c) 2014, Red Hat Inc. All rights reserved.
  * Copyright (c) 2020, 2022, Huawei Technologies Co., Ltd. All rights reserved.
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
@@ -74,7 +74,8 @@ private:
     // See emit_deopt_handler for detail
     // auipc (1) + far_jump (2)
     _deopt_handler_size = 1 * MacroAssembler::instruction_size +
-                          2 * MacroAssembler::instruction_size
+                          2 * MacroAssembler::instruction_size,
+    _deopt_handler_trap_size = _deopt_handler_size,
   };
 
   void check_conflict(ciKlass* exact_klass, intptr_t current_klass, Register tmp,

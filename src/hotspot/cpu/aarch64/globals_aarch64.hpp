@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2000, 2024, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2000, 2025, Oracle and/or its affiliates. All rights reserved.
  * Copyright (c) 2015, 2019, Red Hat Inc. All rights reserved.
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
@@ -41,6 +41,8 @@ define_pd_global(bool, DelayCompilerStubsGeneration, COMPILER2_OR_JVMCI);
 define_pd_global(uintx, CodeCacheSegmentSize,    64);
 define_pd_global(intx, CodeEntryAlignment,       64);
 define_pd_global(intx, OptoLoopAlignment,        16);
+
+define_pd_global(bool, DeoptHandlerCodeUsingTrap, false);
 
 #define DEFAULT_STACK_YELLOW_PAGES (2)
 #define DEFAULT_STACK_RED_PAGES (1)

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2000, 2024, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2000, 2025, Oracle and/or its affiliates. All rights reserved.
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
  * This code is free software; you can redistribute it and/or modify it
@@ -270,7 +270,11 @@ class LIR_Assembler: public CompilationResourceObj {
   }
 
   static int deopt_handler_size() {
-    return _deopt_handler_size;
+    if (DeoptHandlerCodeUsingTrap) {
+      return _deopt_handler_trap_size;
+    } else {
+      return _deopt_handler_size;
+    }
   }
 };
 

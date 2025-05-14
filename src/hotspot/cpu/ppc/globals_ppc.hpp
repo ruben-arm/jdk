@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2002, 2024, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2002, 2025, Oracle and/or its affiliates. All rights reserved.
  * Copyright (c) 2012, 2024 SAP SE. All rights reserved.
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
@@ -37,6 +37,8 @@ define_pd_global(bool, TrapBasedNullChecks,   true);
 define_pd_global(bool, UncommonNullCast,      true);  // Uncommon-trap nulls passed to check cast.
 
 define_pd_global(bool, DelayCompilerStubsGeneration, COMPILER2_OR_JVMCI);
+
+define_pd_global(bool, DeoptHandlerCodeUsingTrap, false);
 
 #define DEFAULT_STACK_YELLOW_PAGES (2)
 #define DEFAULT_STACK_RED_PAGES (1)

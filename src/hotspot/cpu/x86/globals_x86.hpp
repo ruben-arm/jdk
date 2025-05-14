@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2000, 2024, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2000, 2025, Oracle and/or its affiliates. All rights reserved.
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
  * This code is free software; you can redistribute it and/or modify it
@@ -36,6 +36,8 @@ define_pd_global(bool, TrapBasedNullChecks,      false); // Not needed on x86.
 define_pd_global(bool, UncommonNullCast,         true);  // Uncommon-trap nulls passed to check cast
 
 define_pd_global(bool, DelayCompilerStubsGeneration, COMPILER2_OR_JVMCI);
+
+define_pd_global(bool, DeoptHandlerCodeUsingTrap, false);
 
 define_pd_global(uintx, CodeCacheSegmentSize,    64 COMPILER1_AND_COMPILER2_PRESENT(+64)); // Tiered compilation has large code-entry alignment.
 // See 4827828 for this change. There is no globals_core_i486.hpp. I can't

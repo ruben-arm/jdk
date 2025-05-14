@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 1999, 2024, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 1999, 2025, Oracle and/or its affiliates. All rights reserved.
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
  * This code is free software; you can redistribute it and/or modify it
@@ -88,6 +88,8 @@ public:
   // Set PC into context. Needed for continuation after signal.
   static address ucontext_get_pc(const ucontext_t* ctx);
   static void    ucontext_set_pc(ucontext_t* ctx, address pc);
+
+  static void    ucontext_set_lr(ucontext_t* ctx, address lr);
 
   static void to_RTC_abstime(timespec* abstime, int64_t millis);
 

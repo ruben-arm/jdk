@@ -620,17 +620,48 @@ int JVM_HANDLE_XXX_SIGNAL(int sig, siginfo_t* info,
       CodeBlob* cb = CodeCache::find_blob(pc);
       if (cb != nullptr && cb->is_nmethod()) {
         nmethod* nm = cb->as_nmethod();
-        assert(nm->insts_contains_inclusive(pc), "");
-        address deopt = nm->is_method_handle_return(pc) ?
-          nm->deopt_mh_handler_begin() :
-          nm->deopt_handler_begin();
-        assert(deopt != nullptr, "");
+#if defined(AARCH64) && defined(LINUX)
+        if (DeoptHandlerCodeUsingTrap) {
+          if (nm->compiler_type() == compiler_c1 || nm->compiler_type() == compiler_c2) {
+            address deopt = nullptr;
+            if (nm->is_deopt_entry(pc) || nm->is_deopt_mh_entry(pc)) {
+              assert(nm->stub_contains(pc), "");
+              deopt = pc;
+            } else {
+              assert(nm->insts_contains_inclusive(pc), "");
+              deopt = nm->is_method_handle_return(pc) ?
+                nm->deopt_mh_handler_begin() :
+                nm->deopt_handler_begin();
 
-        frame fr = os::fetch_frame_from_context(uc);
-        nm->set_original_pc(&fr, pc);
+              frame fr = os::fetch_frame_from_context(uc);
+              nm->set_original_pc(&fr, pc);
+            }
 
-        os::Posix::ucontext_set_pc(uc, deopt);
-        signal_was_handled = true;
+            assert(deopt != nullptr, "");
+
+            os::Posix::ucontext_set_lr(uc, deopt);
+            os::Posix::ucontext_set_pc(uc, SharedRuntime::deopt_blob()->unpack());
+
+            signal_was_handled = true;
+          }
+        }
+#else // !AARCH64 || !LINUX
+        assert(!DeoptHandlerCodeUsingTrap, "Not implemented.");
+#endif // !AARCH64 || !LINUX
+
+        if (!signal_was_handled) {
+          assert(nm->insts_contains_inclusive(pc), "");
+          address deopt = nm->is_method_handle_return(pc) ?
+            nm->deopt_mh_handler_begin() :
+            nm->deopt_handler_begin();
+          assert(deopt != nullptr, "");
+
+          frame fr = os::fetch_frame_from_context(uc);
+          nm->set_original_pc(&fr, pc);
+
+          os::Posix::ucontext_set_pc(uc, deopt);
+          signal_was_handled = true;
+        }
       }
     }
   }

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 1997, 2024, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 1997, 2025, Oracle and/or its affiliates. All rights reserved.
  * Copyright (c) 2014, 2108, Red Hat Inc. All rights reserved.
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
@@ -533,6 +533,11 @@ inline NativeLdSt* NativeLdSt_at(address addr) {
 class NativePostCallNop: public NativeInstruction {
 public:
   bool check() const {
+    if (!is_nop()) {
+      // This can be the last instruction of a CodeBlob - accessing beyond it would be invalid.
+      return false;
+    }
+
     uint64_t insns = *(uint64_t*)addr_at(0);
     // Check for two instructions: nop; movk zr, xx
     // These instructions only ever appear together in a post-call
@@ -591,7 +596,7 @@ class NativeDeoptInstruction: public NativeInstruction {
   }
 
   // MT-safe patching
-  static void insert(address code_pos);
+  static void insert(address code_pos, bool invalidate = true);
 };
 
 #endif // CPU_AARCH64_NATIVEINST_AARCH64_HPP
