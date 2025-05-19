@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2011, 2024, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2011, 2025, Oracle and/or its affiliates. All rights reserved.
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
  * This code is free software; you can redistribute it and/or modify it
@@ -167,7 +167,7 @@ class HotSpotVMConfig extends HotSpotVMConfigAccess {
     final int methodDataOverflowRecompiles = getFieldOffset("MethodData::_compiler_counters._nof_overflow_recompiles", Integer.class, "uint");
     final int methodDataOverflowTraps = getFieldOffset("MethodData::_compiler_counters._nof_overflow_traps", Integer.class, "uint");
 
-    final int nmethodCompLevelOffset = getFieldOffset("nmethod::_comp_level", Integer.class, "CompLevel");
+    final int nmethodCompLevelOffset = getFieldOffset("nmethod::NMethodHeader::_comp_level", Integer.class, "CompLevel");
 
     final int compilationLevelNone = getConstant("CompLevel_none", Integer.class);
     final int compilationLevelSimple = getConstant("CompLevel_simple", Integer.class);
