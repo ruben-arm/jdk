@@ -131,6 +131,8 @@ define_pd_global(intx, InlineSmallCode,          1000);
           "Always merge DMB instructions in code emission")             \
   product(bool, DisablePCNMOVK, false, EXPERIMENTAL,                    \
           "Disable PCN movk instructions.")                             \
+  product(bool, ReplaceMovWithAdrp, false, EXPERIMENTAL,                \
+          "Replace movz+movk+movk with adrp+add.")                      \
 
 // end of ARCH_FLAGS
 
